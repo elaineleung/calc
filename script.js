@@ -21,7 +21,9 @@ function solveSimple() {
       simpleDisplay.textContent = 0;
     } else {
       simpleEval = eval(simpleInputVal);
-      simpleDisplay.textContent = simpleEval;
+      simpleEval < 999999999999999
+        ? (simpleDisplay.textContent = simpleEval)
+        : (simpleDisplay.textContent = "Number too big!");
     }
   } catch (e) {
     null;
