@@ -8,7 +8,17 @@
 
 <body>
 
-	<div id="main-container">
+	<div id="simple-container">
+		<div class="simple-equation">
+			<h3 id="simple-display">0</h3>
+		</div>
+		<input id="simple-input" placeholder="3 + 3" />
+		<div class="btns">
+			<button id="reset-button" class="btn">Reset</button>
+		</div>
+	</div>
+
+	<div id="classic-container">
 		<div class="equation-component">
 			<h3 id="solution-display">0</h3>
 		</div>
@@ -17,6 +27,10 @@
 			<button id="solve-button" class="btn">Solve</button>
 			<button id="reset-button" class="btn">Reset</button>
 		</div>
+	</div>
+
+	<div id="switches">
+		<button id="simple-mode" class="switch active">Simple Mode</button><button id="classic-mode" class="switch">Classic Mode</button>
 	</div>
 
 	<script src="script.js"></script>

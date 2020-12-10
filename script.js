@@ -1,32 +1,50 @@
-const mainContainer = document.getElementById("main-container");
-const equationField = document.getElementById("equation-field");
+const simpleContainer = document.getElementById("simple-container");
+const classicContainer = document.getElementById("classic-container");
+const simpleInput = document.getElementById("simple-input");
+const simpleDisplay = document.getElementById("simple-display");
+
 const solveButton = document.getElementById("solve-button");
 const resetButton = document.getElementById("reset-button");
-const solutionDisplay = document.getElementById("solution-display");
 
-function solve() {
-  solutionDisplay.textContent = "0";
-  if (equationField.value) {
-    try {
-      let result = eval(equationField.value);
-      solutionDisplay.textContent = result;
-    } catch (e) {
-      if (e) {
-        const error = "Yikes, error!";
-        solutionDisplay.textContent = error;
-      }
-    }
+const simpleMode = document.getElementById("simple-mode");
+const classicMode = document.getElementById("classic-mode");
+
+function solveSimple() {
+  let simpleInputVal = simpleInput.value;
+
+  let simpleEval = 0;
+  // let simpleVals = ["0"]
+
+  try {
+    simpleVals = simpleInputVal.split("");
+    simpleEval = eval(simpleInputVal);
+    simpleDisplay.textContent = simpleEval;
+  } catch (e) {
+    null;
   }
 }
 
-solveButton.addEventListener("click", solve);
+simpleMode.addEventListener("click", function() {
+  simpleContainer.style.display = "flex";
+  simpleMode.classList.add("active");
+  classicContainer.style.display = "none";
+  classicMode.classList.remove("active");
+});
+classicMode.addEventListener("click", function() {
+  classicContainer.style.display = "flex";
+  simpleContainer.style.display = "none";
+  simpleMode.classList.remove("active");
+  classicMode.classList.add("active");
+});
 
-window.addEventListener("keydown", function(e) {
-  if (e.keyCode === 13) {
-    solve();
+window.addEventListener("keyup", function(e) {
+  if (simpleMode.classList.contains("active")) {
+    solveSimple();
+  } else {
+    null;
   }
 });
 resetButton.addEventListener("click", function() {
-  solutionDisplay.textContent = "0";
-  equationField.value = "";
+  simpleDisplay.textContent = "0";
+  simpleInput.value = "";
 });
