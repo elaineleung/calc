@@ -1,79 +1,31 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Inconsolata", monospace;
-  background: #ecf2ff;
+  font-family: "Inconsolata", "Open Sans", monospace;
+  background: #8494b8;
   font-size: 16px;
+  box-sizing: border-box;
 }
 
-h1 {
-  font-size: 2.6rem;
-  margin: 0 0 1rem;
-  font-weight: bold;
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
 }
 
 /* simple calc */
 
 #simple-container {
-  /* 
-        Vertically Stack 
-        & Horizontally Center contents
-    */
-  max-width: 350px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: none;
-  border-radius: 0.5rem;
-  margin: 100px auto 40px;
-  padding: 40px;
-  background: white;
-  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.02),
-    0 6.7px 5.3px rgba(0, 0, 0, 0.028), 0 12.5px 10px rgba(0, 0, 0, 0.035),
-    0 22.3px 17.9px rgba(0, 0, 0, 0.042), 0 41.8px 33.4px rgba(0, 0, 0, 0.05),
-    0 100px 80px rgba(0, 0, 0, 0.07);
-}
-
-#simple-display {
-  width: 14rem;
-  text-align: right;
-  background-color: #3c3c3c;
-  color: white;
-  font-size: 2rem;
-  font-weight: 400;
-  padding: 0.5rem 1rem;
-  border-radius: 0.3rem;
-  margin: 0.5rem;
-}
-
-#simple-input {
-  font-family: "Inconsolata", monospace;
-  text-align: right;
-  font-size: 2rem;
-  background-color: lightgrey;
-  outline: none;
-  margin: 0.5rem;
-  border-radius: 0.3rem;
-  width: 16rem;
-  border: none;
-  padding: 0.5rem;
-}
-
-/* classic calc */
-
-#classic-container {
-  /* 
-        Vertically Stack 
-        & Horizontally Center contents
-    */
-  max-width: 350px;
+  max-width: 20rem;
   display: none;
   flex-direction: column;
   align-items: center;
   border: none;
   border-radius: 0.5rem;
   margin: 100px auto 40px;
-  padding: 40px;
+  padding: 2rem;
   background: white;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.02),
     0 6.7px 5.3px rgba(0, 0, 0, 0.028), 0 12.5px 10px rgba(0, 0, 0, 0.035),
@@ -81,19 +33,175 @@ h1 {
     0 100px 80px rgba(0, 0, 0, 0.07);
 }
 
-.btn {
+#simple-evaluation {
+  width: 16rem;
+  text-align: right;
+  background-color: #3c3c3c;
+  color: white;
+  font-size: 1.8rem;
+  font-weight: 400;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  margin: 0 0 0;
+}
+
+/* #simple-display {
+  width: 14rem;
+  text-align: right;
+  background-color: #3c3c3c;
+  color: white;
+  font-size: 1.8rem;
+  font-weight: 400;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  margin: 0.5rem;
+} */
+
+#simple-input {
   font-family: "Inconsolata", monospace;
+  text-align: right;
+  font-size: 1.8rem;
+  background-color: lightgrey;
+  outline: none;
+  margin: 1rem 0 0.5rem;
+  border-radius: 0.3rem;
+  width: 16rem;
+  border: none;
+  padding: 0.5rem 1rem;
+}
+
+/* classic calc */
+
+#classic-container {
+  max-width: 20rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: none;
+  border-radius: 0.5rem;
+  margin: 4rem auto;
+  padding: 2rem 2rem 1.2rem;
+  background: white;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.02),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.028), 0 12.5px 10px rgba(0, 0, 0, 0.035),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.042), 0 41.8px 33.4px rgba(0, 0, 0, 0.05),
+    0 100px 80px rgba(0, 0, 0, 0.07);
+}
+
+#classic-evaluation {
+  width: 16rem;
+  text-align: right;
+  background-color: #3c3c3c;
+  color: white;
+  font-size: 1.8rem;
+  font-weight: 400;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  margin: 0;
+}
+
+#classic-display {
+  font-family: "Inconsolata";
+  position: relative;
+  border: none;
+  width: 14rem;
+  padding: 0;
+  background-color: #3c3c3c;
+  color: white;
+  font-size: 1.8rem;
+  text-align: right;
+}
+
+.calculator-keys {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 0.8rem;
+  padding: 1rem;
+}
+
+.class-btn {
+  font-family: "Inconsolata", "Open Sans", monospace;
+  font-weight: 500;
+  width: 3.4rem;
+  height: 2.5rem;
+  background: #fff;
+  border-radius: 3px;
+  background: lightgrey;
+  font-size: 1.5rem;
+  color: #333;
+  border: none;
+  background-image: linear-gradient(
+    to bottom,
+    transparent,
+    transparent 50%,
+    rgba(0, 0, 0, 0.04)
+  );
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.15),
+    0 1px 0 0 rgba(255, 255, 255, 0.15);
+  text-shadow: 0 1px rgba(255, 255, 255, 0.4);
+}
+
+.class-btn:hover {
+  background-color: #eaeaea;
+}
+
+.operator {
+  color: #5271b4;
+}
+
+.all-clear {
+  background-color: #f0595f;
+  border-color: #b0353a;
+  color: #fff;
+}
+
+.all-clear:hover {
+  background-color: #f17377;
+}
+
+.equal-sign {
+  background-color: #202f50;
+  border: none;
+  color: #fff;
+  height: 100%;
+  grid-row-start: 5;
+  grid-row-end: 7;
+  grid-column-start: 4;
+}
+
+.zero {
+  grid-row-start: 6;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  width: 100%;
+}
+
+.equal-sign:hover {
+  background-color: #202f50d5;
+}
+
+#mem-indicator {
+  font-size: 1.4em;
+  position: absolute;
+  top: 6px;
+  left: 8px;
+}
+
+.btn {
+  font-family: "Open Sans", monospace;
   border: none;
   background-color: #5ca63a;
-  font-size: 1.8rem;
+  font-size: 1.1rem;
   color: white;
-  padding: 0.7rem 1.5rem;
+  padding: 0.6rem 1.5rem;
   text-align: center;
   cursor: pointer;
   display: inline-block;
-  margin: 0.5rem 0.2rem;
+  margin: 0.5rem 0 0;
   outline: none;
-  border-radius: 0.3rem;
+  border-radius: 0.5rem;
 }
 
 #solve-button:hover,
@@ -102,12 +210,15 @@ solve-button:active {
 }
 
 #reset-button {
-  background-color: #bf1a2f;
+  color: white;
+  background-color: #e05559;
+  border-color: #b0353a;
+  margin-bottom: 0;
 }
 
 #reset-button:hover,
 reset-button:active {
-  background-color: #e74b60;
+  background-color: #fc6f82;
 }
 
 /* switches */
@@ -117,26 +228,42 @@ reset-button:active {
   margin: 3rem 0;
 }
 
-.switch {
-  font-family: "Inconsolata", monospace;
-  margin: 0;
-  padding: 0.8rem 1.5rem;
-  font-size: 1.2rem;
-  border: none;
-  background: grey;
-  color: lightgrey;
-  cursor: pointer;
+.simple-mode,
+.classic-mode {
+  background: rgb(179, 179, 179);
+  color: #3c3c3c;
+  font-size: 1rem;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.02),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.028), 0 12.5px 10px rgba(0, 0, 0, 0.035),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.042), 0 41.8px 33.4px rgba(0, 0, 0, 0.05),
+    0 100px 80px rgba(0, 0, 0, 0.07);
 }
 
-#simple-mode {
+.simple-mode {
   border-radius: 1.5rem 0 0 1.5rem;
 }
 
-#classic-mode {
+.classic-mode {
   border-radius: 0 1.5rem 1.5rem 0;
 }
 
+.simple-mode:focus,
+.simple-mode:hover,
+.classic-mode:focus,
+.classic-mode:hover {
+  background: rgb(196, 196, 196);
+}
+
 .active {
-  background: steelblue;
+  background: #202f50;
   color: white;
+}
+
+.active:hover,
+.active:focus {
+  background: #202f50d5;
+}
+
+footer {
+  text-align: center;
 }

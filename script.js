@@ -1,3 +1,4 @@
+const body = document.querySelector("body");
 const simpleContainer = document.getElementById("simple-container");
 const classicContainer = document.getElementById("classic-container");
 const simpleInput = document.getElementById("simple-input");
@@ -6,19 +7,22 @@ const simpleDisplay = document.getElementById("simple-display");
 const solveButton = document.getElementById("solve-button");
 const resetButton = document.getElementById("reset-button");
 
-const simpleMode = document.getElementById("simple-mode");
-const classicMode = document.getElementById("classic-mode");
+const simpleMode = document.querySelector(".simple-mode");
+const classicMode = document.querySelector(".classic-mode");
+let simpleEval = 0;
+
+// simpleInput.focus();
 
 function solveSimple() {
-  let simpleInputVal = simpleInput.value;
-
-  let simpleEval = 0;
-  // let simpleVals = ["0"]
+  const simpleInputVal = simpleInput.value;
 
   try {
-    simpleVals = simpleInputVal.split("");
-    simpleEval = eval(simpleInputVal);
-    simpleDisplay.textContent = simpleEval;
+    if (!simpleInputVal) {
+      simpleDisplay.textContent = 0;
+    } else {
+      simpleEval = eval(simpleInputVal);
+      simpleDisplay.textContent = simpleEval;
+    }
   } catch (e) {
     null;
   }
@@ -39,11 +43,23 @@ classicMode.addEventListener("click", function() {
 
 window.addEventListener("keyup", function(e) {
   if (simpleMode.classList.contains("active")) {
-    solveSimple();
+    if (e.keyCode === 13) {
+      try {
+        simpleInput.value = eval(simpleInput.value);
+      } catch (e) {
+        null;
+      }
+      // } else if (e.keyCode === 8) {
+      //   simpleDisplay.textContent = "0";
+      //   simpleInput.value = "";
+    } else {
+      solveSimple();
+    }
   } else {
     null;
   }
 });
+
 resetButton.addEventListener("click", function() {
   simpleDisplay.textContent = "0";
   simpleInput.value = "";

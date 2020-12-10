@@ -2,36 +2,67 @@
 
 <head>
 	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
 	<div id="simple-container">
-		<div class="simple-equation">
-			<h3 id="simple-display">0</h3>
+		<div id="simple-evaluation">
+			<span id="simple-display">0</span>
 		</div>
-		<input id="simple-input" placeholder="3 + 3" />
+		<input id="simple-input" placeholder="1+1" type="text" autofocus/>
 		<div class="btns">
 			<button id="reset-button" class="btn">Reset</button>
 		</div>
 	</div>
 
 	<div id="classic-container">
-		<div class="equation-component">
-			<h3 id="solution-display">0</h3>
+		<div id="classic-evaluation">
+			<div id="mem-indicator"></div>
+			<input id="classic-display" value="0" disabled=true></input>
 		</div>
-		<input id="equation-field" placeholder="3 + 3" />
-		<div class="btns">
-			<button id="solve-button" class="btn">Solve</button>
-			<button id="reset-button" class="btn">Reset</button>
+		<div class="calculator-keys">
+
+			<button id="memory-cancel" class="class-btn memory">MC</button>
+			<button class="class-btn memory">M+</button>
+			<button class="class-btn memory">M&#8722;</button>
+			<button class="class-btn memory">MR</button>
+
+			<button id="all-clear" class="class-btn all-clear" value="all-clear">AC</button>
+			<button id="plus-min" class="class-btn operator" value="+">&#177;</button>
+			<button type="button" class="class-btn operator" value="/">&divide;</button>
+			<button type="button" class="class-btn operator" value="*">&times;</button>
+
+			<button type="button" class="class-btn" value="7">7</button>
+			<button type="button" class="class-btn" value="8">8</button>
+			<button type="button" class="class-btn" value="9">9</button>
+			<button type="button" class="class-btn operator" value="-">&#8722;</button>
+
+			<button type="button" class="class-btn" value="4">4</button>
+			<button type="button" class="class-btn" value="5">5</button>
+			<button type="button" class="class-btn" value="6">6</button>
+			<button type="button" class="class-btn operator" value="+">+</button>
+
+			<button type="button" class="class-btn" value="1">1</button>
+			<button type="button" class="class-btn" value="2">2</button>
+			<button type="button" class="class-btn" value="3">3</button>
+			<button type="button" class="class-btn equal-sign" value="=">=</button>
+
+			<button type="button" class="class-btn zero" value="0">0</button>
+			<button type="button" class="class-btn decimal" value=".">.</button>
 		</div>
 	</div>
 
 	<div id="switches">
-		<button id="simple-mode" class="switch active">Simple Mode</button><button id="classic-mode" class="switch">Classic Mode</button>
+		<button class="btn simple-mode">Simple</button><button class="btn classic-mode active">Classic</button>
 	</div>
+
+  <footer>
+    <p>COMPUTOR by elalun </p>
+  </footer>
 
 	<script src="script.js"></script>
 </body>
