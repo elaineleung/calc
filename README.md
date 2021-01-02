@@ -1,3 +1,3 @@
-# web-platform-nahq4e
+# Computor
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/web-platform-nahq4e)
+Calculator in essence
