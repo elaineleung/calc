@@ -9,6 +9,8 @@ const resetButton = document.getElementById("reset-button");
 
 const simpleMode = document.querySelector(".simple-mode");
 const classicMode = document.querySelector(".classic-mode");
+
+const calcKeys = classicContainer.querySelector(".calculator-keys")
 let simpleEval = 0;
 
 // simpleInput.focus();
@@ -36,6 +38,7 @@ simpleMode.addEventListener("click", function() {
   classicContainer.style.display = "none";
   classicMode.classList.remove("active");
 });
+
 classicMode.addEventListener("click", function() {
   classicContainer.style.display = "flex";
   simpleContainer.style.display = "none";
@@ -45,7 +48,7 @@ classicMode.addEventListener("click", function() {
 
 window.addEventListener("keyup", function(e) {
   if (simpleMode.classList.contains("active")) {
-    if (e.keyCode === 13) {
+    if (simpleInput.value && (e.key === 'Enter')) {
       try {
         simpleInput.value = eval(simpleInput.value);
       } catch (e) {
@@ -61,6 +64,22 @@ window.addEventListener("keyup", function(e) {
     null;
   }
 });
+
+window.addEventListener("keydown", function(e){
+  const key = document.querySelector(`button[data-id="${e.key}"]`)
+  // const action = key.dataset.action
+  console.log(key)
+  // if (
+  //   action === 'add' ||
+  //   action === 'subtract' ||
+  //   action === 'multiply' ||
+  //   action === 'divide'
+  // ) {
+  //   console.log('operator key!', e.target)
+  // } else {
+  //   console.log('number key!', e.target)
+  // }123
+})
 
 resetButton.addEventListener("click", function() {
   simpleDisplay.textContent = "0";

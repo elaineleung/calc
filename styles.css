@@ -119,7 +119,7 @@ body {
   /* padding: 1rem; */
 }
 
-.class-btn {
+.calc-btn {
   font-family: "Inconsolata", monospace;
   font-weight: 500;
   width: 3.4rem;
@@ -143,7 +143,7 @@ body {
   text-shadow: 0 1px rgba(255, 255, 255, 0.4);
 }
 
-.class-btn:hover {
+.calc-btn:hover {
   background-color: #eaeaea;
 }
 
