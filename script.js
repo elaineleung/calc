@@ -1,8 +1,11 @@
 const body = document.querySelector("body");
+
 const simpleContainer = document.getElementById("simple-container");
-const classicContainer = document.getElementById("classic-container");
 const simpleInput = document.getElementById("simple-input");
 const simpleDisplay = document.getElementById("simple-display");
+
+const classicContainer = document.getElementById("classic-container");
+const classicDisplay = document.getElementById("classic-display");
 
 const solveButton = document.getElementById("solve-button");
 const resetButton = document.getElementById("reset-button");
@@ -66,9 +69,20 @@ window.addEventListener("keyup", function(e) {
 });
 
 window.addEventListener("keydown", function(e){
-  const key = document.querySelector(`button[data-id="${e.key}"]`)
+  if (classicMode.classList.contains("active")){
+    console.log(classicDisplay.textContent)
+    const displayed = classicDisplay.textContext
+    if (isFinite(e.key)){
+      const key = document.querySelector(`button[value="${e.key}"]`)
+      console.log(key.textContent)
+      classicDisplay.textContent = key.textContent
+    } else {
+    const action = document.querySelector(`button[data-action="${e.key}"]`)
+    console.log(e.key, action)
+    }
+  }
   // const action = key.dataset.action
-  console.log(key)
+
   // if (
   //   action === 'add' ||
   //   action === 'subtract' ||
