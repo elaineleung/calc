@@ -6,7 +6,6 @@ const simpleDisplay = document.getElementById("simple-display");
 
 const classicContainer = document.getElementById("classic-container");
 const classicDisplay = document.getElementById("classic-display");
-
 const solveButton = document.getElementById("solve-button");
 const resetButton = document.getElementById("reset-button");
 
@@ -14,11 +13,24 @@ const simpleMode = document.querySelector(".simple-mode");
 const classicMode = document.querySelector(".classic-mode");
 
 const calcKeys = classicContainer.querySelector(".calculator-keys")
+
+const calculator = {
+  displayValue: '0',
+  firstOperand: null,
+  waitingForSecondOperand: false,
+  operator: null,
+};
+
 let simpleEval = 0;
+let simpleView = true;
 
+const updateDisplay = () => {
+  classicDisplay.value = calculator.displayValue
+}
+
+if (simpleView === true) updateDisplay();
 // simpleInput.focus();
-
-function solveSimple() {
+const solveSimple = () => {
   const simpleInputVal = simpleInput.value;
 
   try {
@@ -35,18 +47,41 @@ function solveSimple() {
   }
 }
 
-simpleMode.addEventListener("click", function() {
+calcKeys.addEventListener('click', (event)=>{
+  const { target } = event;
+  if (!target.matches('button')) {
+    return;
+  }
+  if (target.classList.contains('operator')) {
+    console.log('operator', target.value)
+    return;
+  }
+  if (target.classList.contains('decimal')) {
+    console.log('decimal', target.value);
+    return;
+  }
+  if (target.classList.contains('all-clear')) {
+    console.log('clear', target.value)
+    return;
+  }
+  console.log('digit', target.value)
+
+})
+
+simpleMode.addEventListener("click", () => {
   simpleContainer.style.display = "flex";
   simpleMode.classList.add("active");
   classicContainer.style.display = "none";
   classicMode.classList.remove("active");
+  simpleView = true;
 });
 
-classicMode.addEventListener("click", function() {
+classicMode.addEventListener("click", () => {
   classicContainer.style.display = "flex";
   simpleContainer.style.display = "none";
   simpleMode.classList.remove("active");
   classicMode.classList.add("active");
+  simpleView = false;
 });
 
 window.addEventListener("keyup", function(e) {
@@ -70,12 +105,19 @@ window.addEventListener("keyup", function(e) {
 
 window.addEventListener("keydown", function(e){
   if (classicMode.classList.contains("active")){
-    console.log(classicDisplay.textContent)
-    const displayed = classicDisplay.textContext
+    const displayed = classicDisplay.textContext;
+    const key = document.querySelector(`button[value="${e.key}"]`)
     if (isFinite(e.key)){
-      const key = document.querySelector(`button[value="${e.key}"]`)
-      console.log(key.textContent)
-      classicDisplay.textContent = key.textContent
+      let pressed;
+      if(classicDisplay.textContent === '0'){
+        ;
+        pressed = e.key
+        classicDisplay.textContent = calcNum.textContent;
+        console.log(pressed)
+      } else {
+        pressed = pressed.toString().concat(e.key)
+        console.log("pressed", pressed)
+     }
     } else {
     const action = document.querySelector(`button[data-action="${e.key}"]`)
     console.log(e.key, action)
