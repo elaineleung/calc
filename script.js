@@ -47,6 +47,19 @@ const solveSimple = () => {
   }
 }
 
+
+const inputDigit = (digit) => {
+  const { displayValue } = calculator;
+  calculator.displayValue = displayValue === '0' ? digit
+   : displayValue + digit;
+}
+
+const inputDecimal = (dot) => {
+  if (!calculator.displayValue.includes(dot)) {
+    calculator.displayValue += dot;
+  }
+}
+
 calcKeys.addEventListener('click', (event)=>{
   const { target } = event;
   if (!target.matches('button')) {
@@ -57,16 +70,18 @@ calcKeys.addEventListener('click', (event)=>{
     return;
   }
   if (target.classList.contains('decimal')) {
-    console.log('decimal', target.value);
-    return;
+    inputDecimal();
+    updateDisplay();
   }
   if (target.classList.contains('all-clear')) {
     console.log('clear', target.value)
     return;
   }
-  console.log('digit', target.value)
+  inputDigit(target.value);
+  updateDisplay();
 
 })
+
 
 simpleMode.addEventListener("click", () => {
   simpleContainer.style.display = "flex";
