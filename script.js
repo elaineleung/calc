@@ -47,11 +47,15 @@ const solveSimple = () => {
   }
 }
 
-
 const inputDigit = (digit) => {
-  const { displayValue } = calculator;
-  calculator.displayValue = displayValue === '0' ? digit
-   : displayValue + digit;
+  const { displayValue, waitingForSecondOperand } = calculator;
+  if (waitingForSecondOperand === true) {
+    calculator.displayValue = digit;
+    calculator.waitingForSecondOperand = false;
+  } else {   
+    calculator.displayValue = displayValue === '0' ? digit 
+    : displayValue + digit
+  }
 }
 
 const inputDecimal = (dot) => {
@@ -60,26 +64,34 @@ const inputDecimal = (dot) => {
   }
 }
 
+const handleOperator = (nextOperator) => {
+  const { displayValue, operator, firstOperand } = calculator;
+  const inputValue = parseFloat(displayValue);
+
+  if (firstOperand === null && !isNaN(inputValue)) {
+    calculator.firstOperand = inputValue
+  }
+
+  calculator.waitingForSecondOperand = true;
+  calculator.operator = nextOperator;
+  console.log(calculator.firstOperand)
+}
+
 calcKeys.addEventListener('click', (event)=>{
   const { target } = event;
-  if (!target.matches('button')) {
-    return;
-  }
+  // if (!target.matches('button')) {
+  //   return;
+  // }
   if (target.classList.contains('operator')) {
-    console.log('operator', target.value)
-    return;
-  }
-  if (target.classList.contains('decimal')) {
-    inputDecimal();
-    updateDisplay();
-  }
-  if (target.classList.contains('all-clear')) {
+    handleOperator(target.value)
+  } else if (target.classList.contains('decimal')) {
+    inputDecimal(target.value);
+  } else if (target.classList.contains('all-clear')) {
     console.log('clear', target.value)
-    return;
-  }
+  } else {
   inputDigit(target.value);
+  }
   updateDisplay();
-
 })
 
 
@@ -125,7 +137,6 @@ window.addEventListener("keydown", function(e){
     if (isFinite(e.key)){
       let pressed;
       if(classicDisplay.textContent === '0'){
-        ;
         pressed = e.key
         classicDisplay.textContent = calcNum.textContent;
         console.log(pressed)
