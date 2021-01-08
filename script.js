@@ -16,9 +16,11 @@ const calcKeys = classicContainer.querySelector(".calculator-keys")
 
 const calculator = {
   displayValue: '0',
+  allInputs: [],
   firstOperand: null,
-  waitingForSecondOperand: false,
+  waitingForNextOperand: false,
   operator: null,
+  equalSignPressed: false,
 };
 
 let simpleEval = 0;
@@ -26,6 +28,13 @@ let simpleView = true;
 
 const updateDisplay = () => {
   classicDisplay.value = calculator.displayValue
+}
+
+const allClear = () => {
+  calculator.displayValue = '0';
+  calculator.allInputs = [];
+  calculator.equalSignPressed = false;
+  calculator.waitingForNextOperand = false;
 }
 
 if (simpleView === true) updateDisplay();
@@ -48,10 +57,16 @@ const solveSimple = () => {
 }
 
 const inputDigit = (digit) => {
-  const { displayValue, waitingForSecondOperand } = calculator;
-  if (waitingForSecondOperand === true) {
+  const { displayValue, waitingForNextOperand,equalSignPressed } = calculator;
+
+  console.log(equalSignPressed)
+  if (equalSignPressed === true) {
+    allClear();
     calculator.displayValue = digit;
-    calculator.waitingForSecondOperand = false;
+    calculator.equalSignPressed = false;
+  } else if (waitingForNextOperand === true) {
+    calculator.displayValue = digit;
+    calculator.waitingForNextOperand = false;
   } else {   
     calculator.displayValue = displayValue === '0' ? digit 
     : displayValue + digit
@@ -65,19 +80,58 @@ const inputDecimal = (dot) => {
 }
 
 const handleOperator = (nextOperator) => {
-  const { displayValue, operator, firstOperand } = calculator;
+  const { displayValue, firstOperand, waitingForNextOperand, equalSignPressed } = calculator;
   const inputValue = parseFloat(displayValue);
 
+  if (equalSignPressed === true) {
+    calculator.allInputs.push(nextOperator);
+    calculator.equalSignPressed = false;
+  }
   if (firstOperand === null && !isNaN(inputValue)) {
     calculator.firstOperand = inputValue
+    calculator.allInputs.push(inputValue)
+    calculator.allInputs.push(nextOperator.toString())
+  } else if (waitingForNextOperand === true) {
+    calculator.allInputs.pop()
+    calculator.allInputs.push(nextOperator.toString())
+  } else {
+    calculator.allInputs.push(inputValue)
+    calculator.displayValue = eval(calculator.allInputs.join(''))
+    calculator.allInputs.push(nextOperator.toString())
   }
-
-  calculator.waitingForSecondOperand = true;
+  // else if (!isNaN(calculator.allInputs[calculator.allInputs.length-1])) {
+  //   calculator.allInputs.pop()
+  //   calculator.allInputs.push(nextOperator.toString())
+  // } else {
+  //   calculator.allInputs.push(inputValue)
+  //   calculator.allInputs.push(nextOperator.toString())
+  // }
+  calculator.waitingForNextOperand = true;
+  // calculator.allInputs.push(nextOperator.toString())
   calculator.operator = nextOperator;
-  console.log(calculator.firstOperand)
+  console.log(calculator.allInputs[calculator.allInputs.length-1])
+  console.log(calculator.allInputs)
+  console.log(calculator.allInputs.length)
 }
 
-calcKeys.addEventListener('click', (event)=>{
+
+
+const calculateEquation = () => {
+  const { displayValue, allInputs, equalSignPressed } = calculator; 
+  const inputValue = parseFloat(displayValue)
+  
+  if (equalSignPressed === true) {
+    null
+  } else {
+  allInputs.push(inputValue)
+  calculator.displayValue = eval(calculator.allInputs.join(''))
+  calculator.equalSignPressed = true
+  calculator.waitingForNextOperand = false;
+  console.log(allInputs)
+  }
+}
+
+calcKeys.addEventListener('click', (event) => {
   const { target } = event;
   // if (!target.matches('button')) {
   //   return;
@@ -87,7 +141,9 @@ calcKeys.addEventListener('click', (event)=>{
   } else if (target.classList.contains('decimal')) {
     inputDecimal(target.value);
   } else if (target.classList.contains('all-clear')) {
-    console.log('clear', target.value)
+    allClear();
+  } else if (target.classList.contains('equal-sign')) {
+    calculateEquation();
   } else {
   inputDigit(target.value);
   }
@@ -130,38 +186,38 @@ window.addEventListener("keyup", function(e) {
   }
 });
 
-window.addEventListener("keydown", function(e){
-  if (classicMode.classList.contains("active")){
-    const displayed = classicDisplay.textContext;
-    const key = document.querySelector(`button[value="${e.key}"]`)
-    if (isFinite(e.key)){
-      let pressed;
-      if(classicDisplay.textContent === '0'){
-        pressed = e.key
-        classicDisplay.textContent = calcNum.textContent;
-        console.log(pressed)
-      } else {
-        pressed = pressed.toString().concat(e.key)
-        console.log("pressed", pressed)
-     }
-    } else {
-    const action = document.querySelector(`button[data-action="${e.key}"]`)
-    console.log(e.key, action)
-    }
-  }
-  // const action = key.dataset.action
+// window.addEventListener("keydown", function(e){
+//   if (classicMode.classList.contains("active")){
+//     const displayed = classicDisplay.textContext;
+//     const key = document.querySelector(`button[value="${e.key}"]`)
+//     if (isFinite(e.key)){
+//       let pressed;
+//       if(classicDisplay.textContent === '0'){
+//         pressed = e.key
+//         classicDisplay.textContent = calcNum.textContent;
+//         console.log(pressed)
+//       } else {
+//         pressed = pressed.toString().concat(e.key)
+//         console.log("pressed", pressed)
+//      }
+//     } else {
+//     const action = document.querySelector(`button[data-action="${e.key}"]`)
+//     console.log(e.key, action)
+//     }
+//   }
+//   // const action = key.dataset.action
 
-  // if (
-  //   action === 'add' ||
-  //   action === 'subtract' ||
-  //   action === 'multiply' ||
-  //   action === 'divide'
-  // ) {
-  //   console.log('operator key!', e.target)
-  // } else {
-  //   console.log('number key!', e.target)
-  // }123
-})
+//   // if (
+//   //   action === 'add' ||
+//   //   action === 'subtract' ||
+//   //   action === 'multiply' ||
+//   //   action === 'divide'
+//   // ) {
+//   //   console.log('operator key!', e.target)
+//   // } else {
+//   //   console.log('number key!', e.target)
+//   // }123
+// })
 
 resetButton.addEventListener("click", function() {
   simpleDisplay.textContent = "0";
