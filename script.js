@@ -14,52 +14,36 @@ const classicMode = document.querySelector(".classic-mode");
 
 const calcKeys = classicContainer.querySelector(".calculator-keys")
 
+// Calculator Mode
+
 const calculator = {
   displayValue: '0',
   allInputs: [],
-  firstOperand: null,
+  hasFirstOperand: false,
   waitingForNextOperand: false,
   operator: null,
   equalSignPressed: false,
 };
 
-let simpleEval = 0;
-let simpleView = true;
-
 const updateDisplay = () => {
   classicDisplay.value = calculator.displayValue
 }
 
-const allClear = () => {
-  calculator.displayValue = '0';
+const resetCalc = () => {
   calculator.allInputs = [];
   calculator.equalSignPressed = false;
   calculator.waitingForNextOperand = false;
+  calculator.hasFirstOperand = false;
 }
 
-if (simpleView === true) updateDisplay();
-// simpleInput.focus();
-const solveSimple = () => {
-  const simpleInputVal = simpleInput.value;
-
-  try {
-    if (!simpleInputVal) {
-      simpleDisplay.textContent = 0;
-    } else {
-      simpleEval = eval(simpleInputVal);
-      simpleEval < 999999999999999
-        ? (simpleDisplay.textContent = simpleEval)
-        : (simpleDisplay.textContent = "Number too big!");
-    }
-  } catch (e) {
-    null;
-  }
+const allClear = () => {
+  calculator.displayValue = '0';
+  resetCalc();
 }
 
 const inputDigit = (digit) => {
   const { displayValue, waitingForNextOperand,equalSignPressed } = calculator;
 
-  console.log(equalSignPressed)
   if (equalSignPressed === true) {
     allClear();
     calculator.displayValue = digit;
@@ -80,41 +64,34 @@ const inputDecimal = (dot) => {
 }
 
 const handleOperator = (nextOperator) => {
-  const { displayValue, firstOperand, waitingForNextOperand, equalSignPressed } = calculator;
+  const { displayValue, hasFirstOperand, waitingForNextOperand, equalSignPressed } = calculator;
+  
   const inputValue = parseFloat(displayValue);
 
-  if (equalSignPressed === true) {
-    calculator.allInputs.push(nextOperator);
-    calculator.equalSignPressed = false;
+  switch (true) {
+    case equalSignPressed:
+      calculator.displayValue = inputValue;
+      calculator.allInputs.push(nextOperator);
+      break;
+    case hasFirstOperand === false && !isNaN(inputValue):
+      calculator.hasFirstOperand = true;
+      calculator.allInputs.push(inputValue);
+      calculator.allInputs.push(nextOperator.toString());
+      break;
+    case waitingForNextOperand:
+      calculator.allInputs.pop();
+      calculator.allInputs.push(nextOperator.toString());
+      break;
+    default:
+      calculator.allInputs.push(inputValue);
+      calculator.displayValue = eval(calculator.allInputs.join(''));
+      calculator.allInputs.push(nextOperator.toString());
   }
-  if (firstOperand === null && !isNaN(inputValue)) {
-    calculator.firstOperand = inputValue
-    calculator.allInputs.push(inputValue)
-    calculator.allInputs.push(nextOperator.toString())
-  } else if (waitingForNextOperand === true) {
-    calculator.allInputs.pop()
-    calculator.allInputs.push(nextOperator.toString())
-  } else {
-    calculator.allInputs.push(inputValue)
-    calculator.displayValue = eval(calculator.allInputs.join(''))
-    calculator.allInputs.push(nextOperator.toString())
-  }
-  // else if (!isNaN(calculator.allInputs[calculator.allInputs.length-1])) {
-  //   calculator.allInputs.pop()
-  //   calculator.allInputs.push(nextOperator.toString())
-  // } else {
-  //   calculator.allInputs.push(inputValue)
-  //   calculator.allInputs.push(nextOperator.toString())
-  // }
+  calculator.equalSignPressed = false;
   calculator.waitingForNextOperand = true;
-  // calculator.allInputs.push(nextOperator.toString())
   calculator.operator = nextOperator;
-  console.log(calculator.allInputs[calculator.allInputs.length-1])
-  console.log(calculator.allInputs)
-  console.log(calculator.allInputs.length)
+  
 }
-
-
 
 const calculateEquation = () => {
   const { displayValue, allInputs, equalSignPressed } = calculator; 
@@ -123,40 +100,119 @@ const calculateEquation = () => {
   if (equalSignPressed === true) {
     null
   } else {
-  allInputs.push(inputValue)
-  calculator.displayValue = eval(calculator.allInputs.join(''))
-  calculator.equalSignPressed = true
-  calculator.waitingForNextOperand = false;
-  console.log(allInputs)
+    allInputs.push(inputValue)
+    calculator.displayValue = eval(calculator.allInputs.join(''))
+    calculator.equalSignPressed = true
+    calculator.waitingForNextOperand = false;
   }
 }
 
+const reverseSign = () => {
+  const { displayValue } = calculator;
+  const positive = Math.abs(calculator.displayValue);
+  const negative = 0 - calculator.displayValue;
+
+  if (displayValue < 0) {
+    resetCalc();
+    calculator.displayValue = positive;
+  } else {
+    resetCalc();
+    calculator.displayValue = negative;
+  } 
+  calculator.hasFirstOperand = true;
+  updateDisplay();
+}
+
+
 calcKeys.addEventListener('click', (event) => {
   const { target } = event;
-  // if (!target.matches('button')) {
-  //   return;
-  // }
-  if (target.classList.contains('operator')) {
-    handleOperator(target.value)
-  } else if (target.classList.contains('decimal')) {
-    inputDecimal(target.value);
-  } else if (target.classList.contains('all-clear')) {
-    allClear();
-  } else if (target.classList.contains('equal-sign')) {
-    calculateEquation();
-  } else {
-  inputDigit(target.value);
+
+  if (!target.matches('button')) {
+    return;
   }
+
+  switch (true) {
+    case target.classList.contains('operator'):
+      handleOperator(target.value);
+      break;
+    case target.classList.contains('decimal'):
+      inputDecimal(target.value);
+      break;
+    case target.id === 'all-clear':
+      allClear();
+      break;
+    case target.classList.contains('equal-sign'):
+      calculateEquation();
+      break;
+    case target.id === 'plus-min':
+      reverseSign();
+      break;
+    default:
+      inputDigit(target.value);
+  }
+
   updateDisplay();
 })
 
+window.addEventListener("keydown", function(e){
+  if (classicMode.classList.contains("active")) {
+   
+    const allKeys = '1234567890.+-*/c'
+    if (allKeys.includes(e.key) || e.key === 'Enter') {
+      const keyPressed = document.querySelector(`button[value="${e.key}"]`)
+
+      switch (true) {
+        case keyPressed.classList.contains('operator'):
+          handleOperator(e.key);
+          break;
+        case keyPressed.classList.contains('decimal'):
+          inputDecimal(target.value);
+          break;
+        case keyPressed.id === 'all-clear':  
+          allClear();
+          break;
+        case keyPressed.classList.contains('equal-sign'):  
+          calculateEquation();
+          break;
+        default:
+          inputDigit(e.key);
+      }
+      updateDisplay();
+    }
+  }
+})
+
+// Simple Mode
+
+const simple = {
+  displayValue: 0,
+  view: true,
+}
+
+const solveSimple = () => {
+  const { displayValue } = simple;
+  const simpleInputVal = simpleInput.value;
+
+  try {
+    if (!simpleInputVal) {
+      simpleDisplay.textContent = 0;
+    } else {
+      simple.displayValue = eval(simpleInputVal);
+      displayValue < 999999999999999
+        ? (simpleDisplay.textContent = simple.displayValue)
+        : (simpleDisplay.textContent = "Number too big!");
+    }
+  } catch (e) {
+    null;
+  }
+}
 
 simpleMode.addEventListener("click", () => {
   simpleContainer.style.display = "flex";
   simpleMode.classList.add("active");
   classicContainer.style.display = "none";
   classicMode.classList.remove("active");
-  simpleView = true;
+  simple.view = true;
 });
 
 classicMode.addEventListener("click", () => {
@@ -164,7 +220,7 @@ classicMode.addEventListener("click", () => {
   simpleContainer.style.display = "none";
   simpleMode.classList.remove("active");
   classicMode.classList.add("active");
-  simpleView = false;
+  simple.view = false;
 });
 
 window.addEventListener("keyup", function(e) {
@@ -175,9 +231,7 @@ window.addEventListener("keyup", function(e) {
       } catch (e) {
         null;
       }
-      // } else if (e.keyCode === 8) {
-      //   simpleDisplay.textContent = "0";
-      //   simpleInput.value = "";
+
     } else {
       solveSimple();
     }
@@ -186,38 +240,7 @@ window.addEventListener("keyup", function(e) {
   }
 });
 
-// window.addEventListener("keydown", function(e){
-//   if (classicMode.classList.contains("active")){
-//     const displayed = classicDisplay.textContext;
-//     const key = document.querySelector(`button[value="${e.key}"]`)
-//     if (isFinite(e.key)){
-//       let pressed;
-//       if(classicDisplay.textContent === '0'){
-//         pressed = e.key
-//         classicDisplay.textContent = calcNum.textContent;
-//         console.log(pressed)
-//       } else {
-//         pressed = pressed.toString().concat(e.key)
-//         console.log("pressed", pressed)
-//      }
-//     } else {
-//     const action = document.querySelector(`button[data-action="${e.key}"]`)
-//     console.log(e.key, action)
-//     }
-//   }
-//   // const action = key.dataset.action
-
-//   // if (
-//   //   action === 'add' ||
-//   //   action === 'subtract' ||
-//   //   action === 'multiply' ||
-//   //   action === 'divide'
-//   // ) {
-//   //   console.log('operator key!', e.target)
-//   // } else {
-//   //   console.log('number key!', e.target)
-//   // }123
-// })
+if (simple.view === true) updateDisplay();
 
 resetButton.addEventListener("click", function() {
   simpleDisplay.textContent = "0";
