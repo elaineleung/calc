@@ -59,7 +59,7 @@ body {
 
 #simple-input {
   font-family: "Inconsolata", monospace;
-  text-align: right;
+  text-align: left;
   font-size: 1.8rem;
   background-color: lightgrey;
   outline: none;
@@ -116,6 +116,7 @@ body {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 0.8rem;
+  border: none;
   /* padding: 1rem; */
 }
 
@@ -143,7 +144,14 @@ body {
 }
 
 .calc-btn:hover {
-  background-color: #eaeaea;
+  background-color: #dbdbdb;
+  border: none;
+}
+
+.calc-btn:active {
+  background: #eaeaea;
+  border: none;
+  transition: background .2s linear;
 }
 
 /* .active-calc {

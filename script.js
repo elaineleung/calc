@@ -156,7 +156,7 @@ calcKeys.addEventListener('click', (event) => {
 
 window.addEventListener("keydown", function(e){
   if (classicMode.classList.contains("active")) {
-   
+    
     const allKeys = '1234567890.+-*/c'
     if (allKeys.includes(e.key) || e.key === 'Enter') {
       const keyPressed = document.querySelector(`button[value="${e.key}"]`)
@@ -186,7 +186,7 @@ window.addEventListener("keydown", function(e){
 
 const simple = {
   displayValue: 0,
-  view: true,
+  view: false,
 }
 
 const solveSimple = () => {
@@ -240,7 +240,9 @@ window.addEventListener("keyup", function(e) {
   }
 });
 
-if (simple.view === true) updateDisplay();
+if (simple.view === false) updateDisplay();
+
+console.log(simple.view)
 
 resetButton.addEventListener("click", function() {
   simpleDisplay.textContent = "0";
