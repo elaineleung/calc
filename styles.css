@@ -24,7 +24,7 @@ body {
   align-items: center;
   border: none;
   border-radius: 0.8rem;
-  margin: 100px auto 40px;
+  margin: 4em auto 2em;
   padding: 2rem;
   background: white;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.02),
@@ -44,18 +44,6 @@ body {
   border-radius: 0.3rem;
   margin: 0 0 0;
 }
-
-/* #simple-display {
-  width: 14rem;
-  text-align: right;
-  background-color: #3c3c3c;
-  color: white;
-  font-size: 1.8rem;
-  font-weight: 400;
-  padding: 0.5rem 1rem;
-  border-radius: 0.3rem;
-  margin: 0.5rem;
-} */
 
 #simple-input {
   font-family: "Inconsolata", monospace;
@@ -79,7 +67,7 @@ body {
   align-items: center;
   border: none;
   border-radius: 0.8rem;
-  margin: 4rem auto;
+  margin: 4rem auto 2rem;
   padding: 2rem;
   background: white;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.02),
@@ -130,6 +118,7 @@ body {
   font-size: 1.5rem;
   color: #333;
   border: none;
+  transition: 0.2s;
   background-image: linear-gradient(
     to bottom,
     transparent,
@@ -143,20 +132,20 @@ body {
   text-shadow: 0 1px rgba(255, 255, 255, 0.4);
 }
 
-.calc-btn:hover {
-  background-color: #dbdbdb;
+.calc-btn:hover, .pressed {
+  opacity: 0.65;
   border: none;
 }
 
 .calc-btn:active {
-  background: #eaeaea;
+  opacity: 0.85;
   border: none;
   transition: background .2s linear;
 }
 
-/* .active-calc {
-  tran
-} */
+button:focus {
+  outline-width: 0;
+  }
 
 .operator {
   color: #304c88;

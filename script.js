@@ -160,7 +160,7 @@ window.addEventListener("keydown", function(e){
     const allKeys = '1234567890.+-*/c'
     if (allKeys.includes(e.key) || e.key === 'Enter') {
       const keyPressed = document.querySelector(`button[value="${e.key}"]`)
-
+      keyPressed.classList.add('pressed')
       switch (true) {
         case keyPressed.classList.contains('operator'):
           handleOperator(e.key);
@@ -178,8 +178,22 @@ window.addEventListener("keydown", function(e){
           inputDigit(e.key);
       }
       updateDisplay();
+      
     }
   }
+  
+})
+
+window.addEventListener("keyup", function(e){
+  if (classicMode.classList.contains("active")) {
+    
+    const allKeys = '1234567890.+-*/c'
+    if (allKeys.includes(e.key) || e.key === 'Enter') {
+      const keyPressed = document.querySelector(`button[value="${e.key}"]`)
+      keyPressed.classList.remove('pressed')
+    }
+  }
+  
 })
 
 // Simple Mode
