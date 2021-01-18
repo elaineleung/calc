@@ -21,7 +21,7 @@ const calculator = {
   allInputs: [],
   hasFirstOperand: false,
   waitingForNextOperand: false,
-  operator: null,
+  operatorPressed: false,
   equalSignPressed: false,
 };
 
@@ -34,6 +34,7 @@ const resetCalc = () => {
   calculator.equalSignPressed = false;
   calculator.waitingForNextOperand = false;
   calculator.hasFirstOperand = false;
+  calculator.operatorPressed = false;
 }
 
 const allClear = () => {
@@ -55,6 +56,7 @@ const inputDigit = (digit) => {
     calculator.displayValue = displayValue === '0' ? digit 
     : displayValue + digit
   }
+  // calculator.operatorPressed = false;
 }
 
 const inputDecimal = (dot) => {
@@ -88,9 +90,8 @@ const handleOperator = (nextOperator) => {
       calculator.allInputs.push(nextOperator.toString());
   }
   calculator.equalSignPressed = false;
-  calculator.waitingForNextOperand = true;
-  calculator.operator = nextOperator;
-  
+  calculator.operatorPressed = true;
+  calculator.waitingForNextOperand = true; 
 }
 
 const calculateEquation = () => {
@@ -104,22 +105,34 @@ const calculateEquation = () => {
     calculator.displayValue = eval(calculator.allInputs.join(''))
     calculator.equalSignPressed = true
     calculator.waitingForNextOperand = false;
+    calculator.operatorPressed = false;
   }
 }
 
 const reverseSign = () => {
   const { displayValue } = calculator;
-  const positive = Math.abs(calculator.displayValue);
-  const negative = 0 - calculator.displayValue;
-
+  const positive = 0 + Math.abs(calculator.displayValue);
+  const negative = 0 - Math.abs(calculator.displayValue);
+ 
   if (displayValue < 0) {
+    if (calculator.operatorPressed === true) {
+      calculator.displayValue = positive;
+      console.log(calculator.operatorPressed)
+    } else {
     resetCalc();
     calculator.displayValue = positive;
+    calculator.operatorPressed = false;
+    }
   } else {
-    resetCalc();
-    calculator.displayValue = negative;
+    if (calculator.operatorPressed === true) {
+      calculator.displayValue = negative;
+      console.log(calculator.operatorPressed)
+    } else {
+      resetCalc();
+      calculator.displayValue = negative;
+      calculator.operatorPressed = false;
+    }
   } 
-  calculator.hasFirstOperand = true;
   updateDisplay();
 }
 
